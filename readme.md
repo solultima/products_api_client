@@ -1,0 +1,1 @@
+This project is a cli client for the products api.
