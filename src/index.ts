@@ -1,6 +1,52 @@
 #!/usr/bin/env node
 
-console.log('hello Anant');
+import { Questions } from './questions';
+
+const onCreateOperation = async (entity: string) => {
+  const product = await Questions.askEntityDetails(entity);
+  console.log(product);
+};
+
+const onListOperation = async (entity: string) => {
+  const selectedItem = await Questions.showEntityList(entity);
+  if (selectedItem === 'back') {
+    await onEntitySelected(entity);
+  } else {
+    console.log(`Selected Item ID: ${selectedItem}`);
+  }
+};
+
+const onEntiyOperationSelected = async (operation: string, entity: string) => {
+  switch (operation) {
+    case 'create':
+      await onCreateOperation(entity);
+      break;
+    case 'list':
+      await onListOperation(entity);
+      break;
+    case 'change':
+      await onStart();
+      break;
+  }
+};
+
+const onEntitySelected = async (entity: string) => {
+  switch (entity) {
+    case 'product':
+      await onEntiyOperationSelected(await Questions.askEntityOperationQuestion(), entity);
+      break;
+    default:
+      console.log('Goodbye !');
+      break;
+  }
+};
+const onStart = async () => {
+  await onEntitySelected(await Questions.askEntitiesQuestion());
+};
+
+(async () => {
+  await onStart();
+})();
 
 /*
   - Which entity you want to manage? - Options

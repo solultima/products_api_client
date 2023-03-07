@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "node": true
     },
     "extends": [
         "eslint:recommended",
@@ -20,7 +21,8 @@
     "rules": {
         "indent": [
             "error",
-            4
+            2,
+            { "SwitchCase": 1 }
         ],
         "linebreak-style": [
             "error",
