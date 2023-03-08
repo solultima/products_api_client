@@ -1,28 +1,3 @@
-import * as inquirer from 'inquirer';
-
-import { Answers } from 'inquirer';
-import { QuestionsBase } from './questions.base';
-
-export class Questions extends QuestionsBase {
-  public static askEntitiesQuestion = async () => {
-    return inquirer.prompt(Questions.entities).then((answers: Answers) => {
-      return answers.entities;
-    });
-  };
-
-  public static askEntityOperationQuestion = async () => {
-    return inquirer.prompt(Questions.entityOperations).then((answers: Answers) => {
-      return answers.operations;
-    });
-  };
-
-  public static askEntityDetails = async (entity: string) => {
-    if (entity === 'product') {
-      return inquirer.prompt([Questions.productName, Questions.productStock, Questions.productPrice]).then((answers: Answers) => {
-        return answers;
-      });
-    }
-  };
 
   public static showEntityList = async (entity: string, page?: number): Promise<string> => {
     if (!page) page = 1;
