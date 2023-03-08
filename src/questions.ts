@@ -16,13 +16,48 @@ export class Questions extends QuestionsBase {
     });
   };
 
+  public static askEntityProductOperationQuestion = async () => {
+    return inquirer.prompt(Questions.productOperations).then((answers: Answers) => {
+      if (answers.itemID === 'back') {
+        return 'back';
+      } else {
+      return answers.operation;
+    }});
+  };
+
   public static askEntityDetails = async (entity: string) => {
     if (entity === 'product') {
       return inquirer.prompt([Questions.productName, Questions.productStock, Questions.productPrice]).then((answers: Answers) => {
-        return answers;
+      return answers;
       });
     }
   };
+
+  public static askStockDetails = async () => {
+    {
+      return inquirer.prompt([Questions.productStock]).then((answers: Answers) => {
+        console.log(answers);
+        return answers;
+      
+      })
+    }
+  };
+
+  public static askPriceDetails = async () => {
+    {
+      return inquirer.prompt([Questions.productPrice]).then((answers: Answers) => {
+        console.log(answers);
+        return answers;
+      })
+    }
+  };
+
+  public static findid = async (products: Array<{ _id: string }>) => {
+    products.forEach((product) => {
+      const id = `${product._id}`
+      return id;
+    });
+  }
 
   public static showEntityList = async (entity: string, page?: number): Promise<string> => {
     if (!page) page = 1;

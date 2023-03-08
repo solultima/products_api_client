@@ -56,6 +56,44 @@ export class QuestionsBase {
     },
   };
 
+  protected static productOperations: ListQuestion = {
+    type: 'list',
+    name: 'operation',
+    message: 'Select Operation:',
+    validate: (input, answers) => {
+      console.log(input, answers);
+      return false;
+    },
+    choices: () => {
+      return [
+        {
+          name: 'Update Stock of the Product',
+          value: 'stock',
+          short: 'stock',
+        },
+        {
+          name: 'Update Price of the Product',
+          value: 'price',
+          short: 'price',
+        },
+        {
+          name: 'Delete the Product',
+          value: 'delete',
+          short: 'delete',
+        },
+
+        new Separator(),
+        {
+          name: 'Go Back',
+          value: 'back',
+          short: 'Go Back',
+        },
+
+        // new Separator(),
+      ];
+    },
+  };
+
   protected static buildProductListQuestion = (
     products: Array<{ name: string; _id: string }>,
     showNextPage: boolean,
@@ -116,6 +154,7 @@ export class QuestionsBase {
     };
     return productList;
   };
+
 
   protected static productName: InputQuestion = {
     type: 'input',
