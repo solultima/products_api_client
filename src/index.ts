@@ -4,6 +4,7 @@ import { Questions } from './questions';
 
 const onCreateOperation = async (entity: string) => {
   const product = await Questions.askEntityDetails(entity);
+  const newItem = await Questions.createProductDetails(entity);
   console.log(product);
 };
 
@@ -16,6 +17,28 @@ const onListOperation = async (entity: string) => {
   }
 };
 
+const onListByIdOperation = async (entity: string) => {
+  const pID = await Questions.askId(entity);
+  const selectedItem = await Questions.showProductDetails(pID);
+  console.log(`product details: `,selectedItem);
+};
+const onDeleteProductOperation = async (entity:string) => {
+  const selectedItem = await Questions.showEntityList(entity);
+  if (selectedItem === 'back') {
+    await onEntitySelected(entity);
+  } else {
+ 
+  await Questions.deleteProduct(entity,selectedItem);
+  }
+  console.log( `product deleted sucessfully...`,selectedItem)
+}
+const onUpdateStockOperation = async (entity: string) => {
+  const pID = await Questions.askId(entity);
+  const stock = await Questions.askStock(entity);
+  const selectedItem = await Questions.updateStock(pID,stock);
+  console.log(`stock updated sucessfully: `,selectedItem);
+};
+
 const onEntiyOperationSelected = async (operation: string, entity: string) => {
   switch (operation) {
     case 'create':
@@ -24,6 +47,15 @@ const onEntiyOperationSelected = async (operation: string, entity: string) => {
     case 'list':
       await onListOperation(entity);
       break;
+    case 'listbyid':
+      await onListByIdOperation(entity);
+      break;
+    case 'delete':
+      await onDeleteProductOperation(entity);
+      break;
+      case 'stock':
+        await onUpdateStockOperation(entity);
+        break;
     case 'change':
       await onStart();
       break;
