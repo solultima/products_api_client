@@ -41,6 +41,12 @@ export class QuestionsBase {
           value: 'list',
           short: 'List',
         },
+          {
+          name:'List By Id',
+          value:'listbyid',
+          short:'List By Id'
+        },
+
         {
           name: 'Create New Item',
           value: 'create',
@@ -52,6 +58,44 @@ export class QuestionsBase {
           value: 'change',
           short: 'Create Entity',
         },
+      ];
+    },
+  };
+
+  protected static productOperations: ListQuestion = {
+    type: 'list',
+    name: 'operation',
+    message: 'Select Operation:',
+    validate: (input, answers) => {
+      console.log(input, answers);
+      return false;
+    },
+    choices: () => {
+      return [
+        {
+          name: 'Update Stock of the Product',
+          value: 'stock',
+          short: 'stock',
+        },
+        {
+          name: 'Update Price of the Product',
+          value: 'price',
+          short: 'price',
+        },
+        {
+          name: 'Delete the Product',
+          value: 'delete',
+          short: 'delete',
+        },
+
+        new Separator(),
+        {
+          name: 'Go Back',
+          value: 'back',
+          short: 'Go Back',
+        },
+
+        // new Separator(),
       ];
     },
   };
@@ -117,11 +161,19 @@ export class QuestionsBase {
     return productList;
   };
 
+
   protected static productName: InputQuestion = {
     type: 'input',
     name: 'productName',
     message: 'Provide Product Name:',
   };
+
+  protected static productID: InputQuestion = {
+    type: 'input',
+    name: 'productID',
+    message: 'Provide Product ID:',
+  };
+
 
   protected static productStock: InputQuestion = {
     type: 'input',

@@ -1,3 +1,81 @@
+import * as inquirer from 'inquirer';
+
+import { Answers } from 'inquirer';
+import { QuestionsBase } from './questions.base';
+
+export class Questions extends QuestionsBase {
+  public static askEntitiesQuestion = async () => {
+    return inquirer.prompt(Questions.entities).then((answers: Answers) => {
+      return answers.entities;
+    });
+  };
+
+  public static askEntityOperationQuestion = async () => {
+    return inquirer.prompt(Questions.entityOperations).then((answers: Answers) => {
+      return answers.operations;
+    });
+  };
+
+  public static askEntityProductOperationQuestion = async () => {
+    return inquirer.prompt(Questions.productOperations).then((answers: Answers) => {
+      if (answers.itemID === 'back') {
+        return 'back';
+      } else {
+      return answers.operation;
+    }});
+  };
+
+  public static askEntityDetails = async (entity: string) => {
+    if (entity === 'product') {
+      return inquirer.prompt([Questions.productName, Questions.productStock, Questions.productPrice]).then((answers: Answers) => {
+      return answers;
+      });
+    }
+  };
+
+  public static askId = async(entity:string)=>{
+    if(entity === 'product') {
+      return inquirer.prompt([Questions.productID]).then((id: Answers) =>{
+        return id.productID;
+      });
+    }
+  }
+
+
+  public static askStockDetails = async () => {
+    {
+      return inquirer.prompt([Questions.productStock]).then((answers: Answers) => {
+        console.log(answers);
+        return answers;
+      
+      })
+    }
+  };
+
+  public static askPriceDetails = async () => {
+    {
+      return inquirer.prompt([Questions.productPrice]).then((answers: Answers) => {
+        console.log(answers);
+        return answers;
+      })
+    }
+  };
+
+  public static findid = async (products: Array<{ _id: string }>) => {
+    products.forEach((product) => {
+      const id = `${product._id}`
+      return id;
+    });
+  }
+
+  public static showProductDetails = async (entity: string,id:string) => {
+    
+    const items = await fetch(`http://localhost:5000/products/${id}`).then((res) => res.json());
+     
+  
+     return items;
+    };
+  
 
   public static showEntityList = async (entity: string, page?: number): Promise<string> => {
     if (!page) page = 1;

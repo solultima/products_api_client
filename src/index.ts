@@ -1,10 +1,47 @@
 #!/usr/bin/env node
-
+import axios from 'axios';
 import { Questions } from './questions';
 
 const onCreateOperation = async (entity: string) => {
   const product = await Questions.askEntityDetails(entity);
-  console.log(product);
+  const productInfo = {
+    name : product?.productName,
+    stock: Number(product?.productStock),
+    price: Number(product?.productPrice),
+  }
+  const { data } = await axios.post('http://localhost:5000/products', productInfo);
+  console.log(data);
+};
+
+const onUpdateStockOperation = async (entity: string, pid:string ) => {
+
+  const id= pid
+  const product = await Questions.askStockDetails();
+  const updatedStock = {
+    stock : Number(product?.productStock)
+  }
+  
+  const { data } = await axios.put(`http://localhost:5000/products/${id}/stock`, updatedStock);
+  console.log(data);
+   
+};
+
+const onUpdatePriceOperation = async (entity: string, pid:string ) => {
+
+  const id= pid
+  const product = await Questions.askPriceDetails();
+  const updatedPrice = {
+    price : Number(product?.productPrice)
+  }
+  const { data } = await axios.put(`http://localhost:5000/products/${id}/price`, updatedPrice);
+  console.log(data);
+};
+
+const onDeleteOperation = async (entity: string, pid:string ) => {
+
+  const id= pid;
+  const { data } = await axios.delete(`http://localhost:5000/products/${id}`);
+  console.log(data);
 };
 
 const onListOperation = async (entity: string) => {
@@ -13,6 +50,22 @@ const onListOperation = async (entity: string) => {
     await onEntitySelected(entity);
   } else {
     console.log(`Selected Item ID: ${selectedItem}`);
+    const selectedOperation = await Questions.askEntityProductOperationQuestion();
+    if (selectedOperation == 'stock')
+    {
+      await onUpdateStockOperation(entity,selectedItem);
+    }
+    else if (selectedOperation == 'price')
+    {
+      await onUpdatePriceOperation(entity,selectedItem);
+    }
+    else if (selectedOperation == 'delete')
+    {
+      await onDeleteOperation(entity,selectedItem);
+    }
+    else  if (selectedOperation === 'back') {
+      await onEntitySelected(entity);
+    }
   }
 };
 
@@ -40,6 +93,7 @@ const onEntitySelected = async (entity: string) => {
       break;
   }
 };
+
 const onStart = async () => {
   await onEntitySelected(await Questions.askEntitiesQuestion());
 };
@@ -47,6 +101,7 @@ const onStart = async () => {
 (async () => {
   await onStart();
 })();
+
 
 /*
   - Which entity you want to manage? - Options
