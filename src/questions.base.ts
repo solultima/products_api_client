@@ -8,7 +8,7 @@ export class QuestionsBase {
     validate: (input, answers) => {
       console.log(input, answers);
       return false;
-    },
+    },  
     choices: () => {
       return [
         {
@@ -46,6 +46,25 @@ export class QuestionsBase {
           value: 'create',
           short: 'Create',
         },
+        {
+          name:'List By Id',
+          value:'listbyid',
+          short:'List By Id'
+        },
+        {
+          name:'Update Price',
+          value:'updateprice',
+          short:'updateprice'
+        },{
+          name:'Update Stock',
+          value:'updatestock',
+          short:'updatestock'
+        },
+        {
+          name:'Delete Product',
+          value:'delete',
+          short:'Delete Product'
+        },
         new Separator(),
         {
           name: 'Select Different Entity',
@@ -57,7 +76,7 @@ export class QuestionsBase {
   };
 
   protected static buildProductListQuestion = (
-    products: Array<{ name: string; _id: string }>,
+    products: Array<{ name: string; _id: string;price:number }>,
     showNextPage: boolean,
     showPrevPage: boolean
   ) => {
@@ -95,7 +114,7 @@ export class QuestionsBase {
 
         products.forEach((product) => {
           options.push({
-            name: `- ${product.name} (${product._id})`,
+            name: `- ${product.name} (${product._id}) (${product.price})`,
             value: product._id,
             short: product.name,
           });
@@ -116,6 +135,14 @@ export class QuestionsBase {
     };
     return productList;
   };
+ 
+  
+  protected static productID: InputQuestion = {
+    type: 'input',
+    name: 'productID',
+    message: 'Provide Product ID:',
+  };
+
 
   protected static productName: InputQuestion = {
     type: 'input',

@@ -16,6 +16,54 @@ const onListOperation = async (entity: string) => {
   }
 };
 
+const onListByIdOperation = async (entity: string) => {
+  const pID = await Questions.askId(entity);
+  const selectedItem = await Questions.showProductDetails(entity, pID);
+
+  console.log(`product details: `, selectedItem);
+
+};
+const onDeleteProductOperation = async (entity: string) => {
+  const selectedItem = await Questions.showEntityList(entity);
+  if (selectedItem === 'back') {
+    await onEntitySelected(entity);
+  } else {
+
+    await Questions.deleteProduct(entity, selectedItem);
+  }
+  console.log(`product deleted sucessfully...`, selectedItem)
+}
+
+const onPriceUpdateOperation = async (entity: string) => {
+
+    const productID = await Questions.askId(entity);
+    const price = await Questions.askPrice(entity);
+    const confirmation = await Questions.askOptionsQuestion('Confirm update?', ['Yes', 'No']);
+
+    if (confirmation === 'Yes') {
+      const updatedProduct = await Questions.updatePrice( productID, price);
+      console.log(`Product ${updatedProduct} updated successfully...`,);
+    } else {
+      console.log('Update operation cancelled...');
+    }
+  }
+
+
+const onStockUpdateOperation = async (entity: string) => {
+
+    const productID = await Questions.askId(entity);
+    const stock = await Questions.askStock(entity);
+    const confirmation = await Questions.askOptionsQuestion('Confirm update?', ['Yes', 'No']);
+
+    if (confirmation === 'Yes') {
+      const updatedProduct = await Questions.updateStock(productID, stock);
+      console.log(`Product ${updatedProduct} updated successfully...`, );
+    } else {
+      console.log('Update operation cancelled...');
+    }
+}
+
+
 const onEntiyOperationSelected = async (operation: string, entity: string) => {
   switch (operation) {
     case 'create':
@@ -23,6 +71,18 @@ const onEntiyOperationSelected = async (operation: string, entity: string) => {
       break;
     case 'list':
       await onListOperation(entity);
+      break;
+    case 'listbyid':
+      await onListByIdOperation(entity);
+      break;
+    case 'updateprice':
+      await onPriceUpdateOperation(entity);
+      break;
+    case 'updatestock':
+      await onStockUpdateOperation(entity);
+      break;
+    case 'delete':
+      await onDeleteProductOperation(entity);
       break;
     case 'change':
       await onStart();
