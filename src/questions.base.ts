@@ -5,10 +5,6 @@ export class QuestionsBase {
     type: 'list',
     name: 'entities',
     message: 'Select Entity:',
-    validate: (input, answers) => {
-      console.log(input, answers);
-      return false;
-    },
     choices: () => {
       return [
         {
@@ -51,6 +47,41 @@ export class QuestionsBase {
           name: 'Select Different Entity',
           value: 'change',
           short: 'Create Entity',
+        },
+      ];
+    },
+  };
+
+  protected static itemOperations: ListQuestion = {
+    type: 'list',
+    name: 'operations',
+    message: 'Select Operation:',
+    validate: (input, answers) => {
+      console.log(input, answers);
+      return false;
+    },
+    choices: () => {
+      return [
+        {
+          name: 'Delete Selected',
+          value: 'delete',
+          short: 'Delete',
+        },
+        {
+          name: 'Update Stock',
+          value: 'update-stock',
+          short: 'Update Stock',
+        },
+        {
+          name: 'Update Price',
+          value: 'update-price',
+          short: 'Update Price',
+        },
+        new Separator(),
+        {
+          name: 'Back',
+          value: 'back',
+          short: 'Back',
         },
       ];
     },

@@ -24,9 +24,27 @@ export class Questions extends QuestionsBase {
     }
   };
 
+  public static askPriceToBeUpdated = async () => {
+    return inquirer.prompt(Questions.productPrice).then((answers: Answers) => {
+      return answers.productPrice;
+    });
+  };
+
+  public static askStockToBeUpdated = async () => {
+    return inquirer.prompt(Questions.productStock).then((answers: Answers) => {
+      return answers.productStock;
+    });
+  };
+
+  public static askItemOperations = async () => {
+    return inquirer.prompt(Questions.itemOperations).then((answers: Answers) => {
+      return answers.operations;
+    });
+  };
+
   public static showEntityList = async (entity: string, page?: number): Promise<string> => {
     if (!page) page = 1;
-    const products = await fetch(`http://localhost:5000/products?page=${page}`).then((res) => res.json());
+    const products = await fetch(`https://products-api.localhost.com/products?page=${page}`, {}).then((res) => res.json());
     const haveNextPage = products.pageNumber * products.pageSize < products.totalItemCount;
     const havePreviousPage = products.pageNumber > 1;
 
