@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as inquirer from 'inquirer';
 
 import { Answers } from 'inquirer';

@@ -1,75 +1,157 @@
 #!/usr/bin/env node
 import { Questions } from './questions';
 
+import axios from 'axios';
+
+// const onCreateOperation = async (entity: string) => {
+//   const product = await Questions.askEntityDetails(entity);
+//   const productInfo = {
+//     name : product?.productName,
+//     stock: Number(product?.productStock),
+//     price: Number(product?.productPrice),
+//   }
+//   const data = await fetch('http://localhost:5000/products' ,{
+//     body : JSON.stringify(productInfo),
+//     method : 'POST',
+//     headers: {
+//       "Content-Type" : 'application/json',
+//     }
+//   }).then((response) => response.json());
+//   console.log(data);
+// };
+
 const onCreateOperation = async (entity: string) => {
   const product = await Questions.askEntityDetails(entity);
-  const productInfo = {
+  const data = await axios.post('http://localhost:5000/products' ,{
     name : product?.productName,
     stock: Number(product?.productStock),
     price: Number(product?.productPrice),
-  }
-  const data = await fetch('http://localhost:5000/products' ,{
-    body : JSON.stringify(productInfo),
-    method : 'POST',
     headers: {
       "Content-Type" : 'application/json',
     }
-  }).then((response) => response.json());
+  })
   console.log(data);
 };
+
+// const onUpdateStockOperation = async (entity: string, pid:string ) => {
+
+//  const id= pid
+//   const product = await Questions.askStockDetails();
+//   const updatedStock = {
+//     stock : Number(product?.productStock)
+//   }
+  
+//   const data = await fetch (`http://localhost:5000/products/${id}/stock`, {
+//     body : JSON.stringify(updatedStock),
+//     method : 'PUT',
+//     headers : {
+//       "Content-Type" : 'application/json',
+//     }
+//   })
+//   .then((response) => response.json());
+//    console.log(id);
+   
+// };
 
 const onUpdateStockOperation = async (entity: string, pid:string ) => {
 
   const id= pid
-  const product = await Questions.askStockDetails();
-  const updatedStock = {
-    stock : Number(product?.productStock)
-  }
-  
-  const data = await fetch (`http://localhost:5000/products/${id}/stock`, {
-    body : JSON.stringify(updatedStock),
-    method : 'PUT',
-    headers : {
-      "Content-Type" : 'application/json',
-    }
-  })
-  .then((response) => response.json());
-   console.log(id);
+   const product = await Questions.askStockDetails();
+   const updatedStock = {
+     stock : Number(product?.productStock)
+   }
    
-};
+   const data = await axios.put(`http://localhost:5000/products/${id}/stock`, {
+    stock : Number(product?.productStock),
+     headers : {
+       "Content-Type" : 'application/json',
+     }
+   })
+    console.log(id);
+    
+ };
+
+// const onUpdatePriceOperation = async (entity: string, pid:string ) => {
+
+//   const id= pid
+//   const product = await Questions.askPriceDetails();
+//   const updatedPrice = {
+//     price : Number(product?.productPrice)
+//   }
+//   const data = await fetch (`http://localhost:5000/products/${id}/price`, {
+//     body : JSON.stringify(updatedPrice),
+//     method : 'PUT',
+//     headers : {
+//       "Content-Type" : 'application/json',
+//     }
+//   })
+//   .then((response) => response.json());
+   
+   
+// };
 
 const onUpdatePriceOperation = async (entity: string, pid:string ) => {
 
   const id= pid
   const product = await Questions.askPriceDetails();
-  const updatedPrice = {
-    price : Number(product?.productPrice)
-  }
-  const data = await fetch (`http://localhost:5000/products/${id}/price`, {
-    body : JSON.stringify(updatedPrice),
-    method : 'PUT',
+  const data = await axios.put(`http://localhost:5000/products/${id}/price`, {
+    price : Number(product?.productPrice),
     headers : {
       "Content-Type" : 'application/json',
     }
   })
-  .then((response) => response.json());
-   
-   
+  console.log(id); 
 };
+
+
+// const onDeleteOperation = async (entity: string, pid:string ) => {
+
+//   const id= pid;
+//   const data = await fetch (`http://localhost:5000/products/${id}`, {
+//     method : 'DELETE',
+//     headers : {
+//       "Content-Type" : 'application/json',
+//     }
+//   })
+//   .then((response) => response.json());
+// };
 
 const onDeleteOperation = async (entity: string, pid:string ) => {
 
   const id= pid;
-  const data = await fetch (`http://localhost:5000/products/${id}`, {
-    method : 'DELETE',
+  const data = await axios.delete(`http://localhost:5000/products/${id}`, {
     headers : {
       "Content-Type" : 'application/json',
     }
   })
-  .then((response) => response.json());
-  ;
-   
+  console.log (id);
+  console.log(data);
 };
+
+// const onproductDescription = async (entity: string , pid: string) => {
+
+//   const id= pid;
+//   const data = await fetch (`http://localhost:5000/products/${id}`, {
+//     headers : {
+
+//       "Content-Type" : 'application/json', 
+//     }
+//   }).then((res) => res.json()); 
+//   console.log(id);
+//   console.log(data);
+// }
+
+const onproductDescription = async (entity: string , pid: string) => {
+
+  const id= pid;
+  const data = await axios.get(`http://localhost:5000/products/${id}`, {
+    headers : {
+
+      "Content-Type" : 'application/json', 
+    }
+  }).then( res => res.data)
+  console.log(data , 'utf-8');
+}
 
 
 const onListOperation = async (entity: string) => {
@@ -90,6 +172,10 @@ const onListOperation = async (entity: string) => {
     else if (selectedOperation == 'delete')
     {
       await onDeleteOperation(entity,selectedItem);
+    }
+    else if (selectedOperation == 'description')
+    {
+      await onproductDescription(entity,selectedItem);
     }
     else  if (selectedOperation === 'back') {
       await onEntitySelected(entity);

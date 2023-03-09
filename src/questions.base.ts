@@ -81,6 +81,12 @@ export class QuestionsBase {
           value: 'delete',
           short: 'delete',
         },
+        {
+          name: 'Product Description',
+          value:'description',
+          short: 'description'
+
+        },
 
         new Separator(),
         {
